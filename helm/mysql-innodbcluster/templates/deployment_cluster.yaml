@@ -287,6 +287,10 @@ spec:
         {{- $backupProfile := ternary $profile.dumpInstance $profile.snapshot $isDumpInstance }}
         {{- if $isDumpInstance }}
     dumpInstance:
+          {{- if $backupProfile.dumpOptions }}
+      dumpOptions:
+             {{- toYaml $backupProfile.dumpOptions | nindent 8 }}
+           {{- end }}
         {{- else if $isSnapshot }}
     snapshot:
         {{- else }}
@@ -365,6 +369,10 @@ spec:
         {{- end }}
         {{- if $isDumpInstance }}
       dumpInstance:
+          {{- if $schedule.backupProfile.dumpInstance.dumpOptions }}
+        dumpOptions:
+            {{- toYaml $schedule.backupProfile.dumpInstance.dumpOptions | nindent 10 }}
+          {{- end }}
         {{- else if $isSnapshot }}
       snapshot:
         {{- end }}
