@@ -26,6 +26,11 @@ baseServerId: 1000
 #  instances: 1
 #  certAndPKsecretName:
 #  podSpec:
+#    containers:
+#      - name: router
+#        resources:
+#          requests:
+#          limits:
 #  podAnnotations:
 #  podLabels:
 
@@ -35,7 +40,7 @@ baseServerId: 1000
 
 #logs:
 #  error:
-#    enabled: true
+#    verbosity: 3 #3 is default
 #    collect: false
 #  general:
 #    enabled: false
@@ -123,7 +128,29 @@ baseServerId: 1000
 #      limits:
 #        memory: "8192Mi"  # adapt to your needs
 #        cpu: "3600m"      # adapt to your needs
-#
+#    readinessProbe:
+#      exec:
+#        command: ["/readinessprobe.sh"]
+#      periodSeconds: 5
+#      initialDelaySeconds: 10
+#      failureThreshold: 10000
+#    livenessProbe:
+#      exec:
+#        command: ["/livenessprobe.sh"]
+#      initialDelaySeconds: 15
+#      periodSeconds: 15
+#      failureThreshold: 10
+#      successThreshold: 1
+#      timeoutSeconds: 5
+#  initContainers:
+#  - name: initmysql
+#    resources:
+#      requests:
+#        memory: "2048Mi"  # adapt to your needs
+#        cpu: "1000m"      # adapt to your needs
+#      limits:
+#        memory: "2048Mi"  # adapt to your needs
+#        cpu: "3000m"      # adapt to your needs
 #podAnnotations:
 #podLabels:
 
@@ -135,32 +162,39 @@ baseServerId: 1000
 
 
 #datadirVolumeClaimTemplate:
-#  accessModes:
+#  storageClassName:
+#  accessModes: ReadWriteOnce
 #  resources:
 #    requests:
 #      storage:
 
-#initDB:
+#initDB:  # you need to fill in 'options, and either one of ociObjectStorage, s3, azure, persistentVolumeClaim. Then, on a fresh install, the cluster will spin up normally, but the master pod sidecar will start the restore.
 #  dump:
-#    name:
-#    path:
+#    name: #not used for buckets
+#    path: #not used for buckets
 #    options:
-#      includeSchemas:
+#      includeSchemas: []
 #    ociObjectStorage:
 #      prefix:
 #      bucketName:
 #      credentials:
 #    s3:
-#      prefix:
-#      config:
+#      prefix: prefix/clustername-schedulenameYYMMDDHHIISS #required; the 'path'
+#      config: #the name of the secret that holds the 'config' and 'credentials' file. Which should be like: https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-files.html
 #      bucketName:
-#      profile:
-#      endpoint
+#      profile: #optional, the user profile in the config, if not 'default'
+#      endpoint:
 #    azure:
 #      prefix:
 #      config:
 #      containerName:
 #    persistentVolumeClaim:
+#      accessModes:
+#      - ReadWriteOnce
+#      resources:
+#        requests:
+#          storage: 3Gi
+#      storageClassName:
 #  clone:
 #    donorUrl:
 #    rootUser:
@@ -169,6 +203,8 @@ baseServerId: 1000
 
 #backupProfiles:
 #- name: dump-instance-profile-pvc
+#  podLabels:
+#  podAnnotations:
 #  dumpInstance:
 #    dumpOptions:
 #      excludeSchemas: ["excludeme"]
@@ -176,6 +212,8 @@ baseServerId: 1000
 #      persistentVolumeClaim:
 #        claimName: backup-volume-claim-1
 #- name: dump-instance-profile-oci
+#  podLabels:
+#  podAnnotations:
 #  dumpInstance:
 #    dumpOptions:
 #      excludeSchemas: ["excludeme"]
@@ -186,6 +224,8 @@ baseServerId: 1000
 #        credentials: oci-credentials
 #
 #- name: snapshot-profile-oci
+#  podLabels:
+#  podAnnotations:
 #  snapshot:
 #    storage:
 #      ociObjectStorage:
@@ -193,11 +233,11 @@ baseServerId: 1000
 #        bucketName: idbcluster_backup
 #        credentials: oci-credentials
 #      s3:
-#        prefix:
-#        config:
+#        prefix: #optional
+#        config: #the name of the secret that holds the 'config' and 'credentials' file. Which should be like: https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-files.html
 #        bucketName:
-#        profile:
-#        endpoint
+#        profile: #optional: the user profile in the config, if not 'default'.
+#        endpoint #optional
 #      azure:
 #        prefix:
 #        config:
@@ -207,13 +247,13 @@ baseServerId: 1000
 #- name: schedule-ref
 #  schedule: "*/1 * * * *"
 #  timeZone: "Europe/Amsterdam"
-#  deleteBackupData: false
+#  deleteBackupData: false #unused
 #  backupProfileName: dump-instance-profile-oci
 #  enabled: true
 #- name: schedule-inline
 #  schedule: "*/1 * * * *"
 #  timeZone: "Europe/Amsterdam"
-#  deleteBackupData: false
+#  deleteBackupData: false #unused
 #  enabled: true
 #  backupProfile:
 #    dumpInstance:
@@ -233,3 +273,4 @@ disableLookups: false
 
 # Set explicit FQDN for MySQL instances
 # serviceFqdnTemplate: "{service}.{namespace}.svc.{domain}"
+
