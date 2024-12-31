@@ -188,7 +188,7 @@ baseServerId: 1000
 #      prefix:
 #      config:
 #      containerName:
-#    persistentVolumeClaim:
+#    persistentVolumeClaim: #this is not supported yet
 #      accessModes:
 #      - ReadWriteOnce
 #      resources:
