@@ -47,7 +47,8 @@ baseServerId: 1000
 #    collect: false
 #  slowQuery:
 #    enabled: false
-#    longQueryTime: 2.5
+#    longQueryTime: 2.5 #default 10
+#    collect: false
 #  collector:
 #    image: "192.168.20.198:5000/fluentd-es:v1.16"
 #    fluentd:
@@ -274,3 +275,16 @@ disableLookups: false
 # Set explicit FQDN for MySQL instances
 # serviceFqdnTemplate: "{service}.{namespace}.svc.{domain}"
 
+#metrics:
+#  enable: false
+#  image: 
+#  options: [] #Options passed to the metrics provider as command line arguments
+#  webConfig: #Name of a ConfigMap with a web.config file, if this option is provided a command line option --web.config.file is added
+#  tlsSecret: #Name of a Secret with TLS certificate, key and CA, which will be mounted at /tls into the container and can be used from webConfig
+#  monitor: false #Create a ServiceMonitor for Prometheus Operator
+#  monitorSpec: {} #Custom configuration for the ServiceMonitor object
+#  # These are only supported for development purpose:
+#  dbUser:
+#    name: #The account name, host part will always be localhost
+#    grants: [ 'PROCESS', 'REPLICATION CLIENT', 'SELECT' ]
+#    maxConnections: 3
