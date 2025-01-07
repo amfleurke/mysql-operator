@@ -116,6 +116,10 @@ spec:
 
     spec.add_to_pod_spec(job["spec"]["template"], "operator-backup-job")
 
+    if spec.backupProfile.podSpec:
+        utils.merge_patch_object(job["spec"]["template"]["spec"],
+                                 spec.backupProfile.podSpec, "spec.podSpec")
+
     return job
 
 

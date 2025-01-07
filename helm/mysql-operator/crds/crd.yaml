@@ -423,6 +423,9 @@ spec:
                       podLabels:
                         type: object
                         x-kubernetes-preserve-unknown-fields: true
+                      podSpec:
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       dumpInstance:
                         type: object
                         properties:
@@ -568,6 +571,9 @@ spec:
                             type: object
                             x-kubernetes-preserve-unknown-fields: true
                           podLabels:
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          podSpec:
                             type: object
                             x-kubernetes-preserve-unknown-fields: true
                           dumpInstance:
@@ -946,6 +952,9 @@ spec:
                       type: object
                       x-kubernetes-preserve-unknown-fields: true
                     podLabels:
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    podSpec:
                       type: object
                       x-kubernetes-preserve-unknown-fields: true
                     dumpInstance:

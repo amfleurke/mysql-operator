@@ -215,6 +215,18 @@ baseServerId: 1000
 #- name: dump-instance-profile-oci
 #  podLabels:
 #  podAnnotations:
+#  podSpec:
+#    containers:
+#      - name: operator-backup-job
+#        resources:
+#          requests:
+#            memory: "512Mi"  # adapt to your needs
+#            cpu: "200m"      # adapt to your needs
+#            ephemeral-storage: "160Mi" # adapt to your needs
+#          limits:
+#            memory: "512Mi"  # adapt to your needs
+#            cpu: "900m"      # adapt to your needs
+#            ephemeral-storage: "160Mi"
 #  dumpInstance:
 #    dumpOptions:
 #      excludeSchemas: ["excludeme"]
@@ -227,6 +239,7 @@ baseServerId: 1000
 #- name: snapshot-profile-oci
 #  podLabels:
 #  podAnnotations:
+#  podSpec:
 #  snapshot:
 #    storage:
 #      ociObjectStorage:

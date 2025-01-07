@@ -67,6 +67,7 @@ class BackupProfile:
         self.snapshot: Optional[Snapshot] = None
         self.podAnnotations: Optional[dict] = None
         self.podLabels: Optional[dict] = None
+        self.podSpec: Optional[dict] = None
 
     def add_to_pod_spec(self, pod_spec: dict, container_name: str) -> None:
         assert self.snapshot or self.dumpInstance
@@ -82,6 +83,8 @@ class BackupProfile:
             self.podAnnotations = dget_dict(spec, "podAnnotations", prefix)
         if "podLabels" in spec:
             self.podLabels = dget_dict(spec, "podLabels", prefix)
+        if "podSpec" in spec:
+            self.podSpec = dget_dict(spec, "podSpec", prefix)
 
         prefix += "." + self.name
         method_spec = dget_dict(spec, "dumpInstance", prefix, {})
@@ -102,7 +105,7 @@ class BackupProfile:
                 f"One of dumpInstance or snapshot must be set in a {prefix}")
 
     def __str__(self) -> str:
-        return f"Object BackupProfile name={self.name} dumpInstance={self.dumpInstance} snapshot={self.snapshot} podAnnotations={self.podAnnotations} podLabels={self.podLabels}"
+        return f"Object BackupProfile name={self.name} dumpInstance={self.dumpInstance} snapshot={self.snapshot} podAnnotations={self.podAnnotations} podLabels={self.podLabels} podSpec={self.podSpec}"
 
     def __eq__(self, other: 'BackupProfile') -> bool:
         assert other is None or isinstance(other, BackupProfile)
