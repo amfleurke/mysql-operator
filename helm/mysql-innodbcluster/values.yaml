@@ -26,6 +26,11 @@ baseServerId: 1000
 #  instances: 1
 #  certAndPKsecretName:
 #  podSpec:
+#    containers:
+#      - name: router
+#        resources:
+#          requests:
+#          limits:
 #  podAnnotations:
 #  podLabels:
 
@@ -123,7 +128,15 @@ baseServerId: 1000
 #      limits:
 #        memory: "8192Mi"  # adapt to your needs
 #        cpu: "3600m"      # adapt to your needs
-#
+#  initContainers:
+#  - name: initmysql
+#    resources:
+#      requests:
+#        memory: "2048Mi"  # adapt to your needs
+#        cpu: "1000m"      # adapt to your needs
+#      limits:
+#        memory: "2048Mi"  # adapt to your needs
+#        cpu: "3000m"      # adapt to your needs
 #podAnnotations:
 #podLabels:
 
@@ -169,6 +182,20 @@ baseServerId: 1000
 
 #backupProfiles:
 #- name: dump-instance-profile-pvc
+#  podLabels:
+#  podAnnotations:
+#  podSpec:
+#    containers:
+#      - name: operator-backup-job
+#        resources:
+#          requests:
+#            memory: "512Mi"  # adapt to your needs
+#            cpu: "200m"      # adapt to your needs
+#            ephemeral-storage: "160Mi" # adapt to your needs
+#          limits:
+#            memory: "512Mi"  # adapt to your needs
+#            cpu: "900m"      # adapt to your needs
+#            ephemeral-storage: "160Mi"
 #  dumpInstance:
 #    dumpOptions:
 #      excludeSchemas: ["excludeme"]
@@ -176,6 +203,9 @@ baseServerId: 1000
 #      persistentVolumeClaim:
 #        claimName: backup-volume-claim-1
 #- name: dump-instance-profile-oci
+#  podLabels:
+#  podAnnotations:
+#  podSpec:
 #  dumpInstance:
 #    dumpOptions:
 #      excludeSchemas: ["excludeme"]
@@ -186,6 +216,9 @@ baseServerId: 1000
 #        credentials: oci-credentials
 #
 #- name: snapshot-profile-oci
+#  podLabels:
+#  podAnnotations:
+#  podSpec:
 #  snapshot:
 #    storage:
 #      ociObjectStorage:
