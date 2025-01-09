@@ -225,7 +225,7 @@ class MetriscSpec:
 
             config = f"""[client]
 user={self.dbuser_name}
-socket=unix:///var/run/mysqld/mysql.sock
+socket=/var/run/mysqld/mysql.sock
 """
 
             return [
